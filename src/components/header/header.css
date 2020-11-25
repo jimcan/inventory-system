@@ -1,0 +1,29 @@
+.top-nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+.top-nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+.top-nav li {
+    float: left;
+}
+
+.top-nav li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.top-nav a:hover {
+    background-color: #111;
+}
