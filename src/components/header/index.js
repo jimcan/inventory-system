@@ -1,14 +1,28 @@
 import React from 'react'
 import './header.css'
 
-export default function Appbar() {
+export default function Appbar({ active, setActive }) {
     return (
         <header>
-            <a href="#" className="logo">Logo</a>
+            <a
+                href="#"
+                className="logo"
+                onClick={() => setActive(0)}
+            >
+                R & C Trading</a>
             <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contacts</a></li>
+                {
+                    ['Transaction', 'Database', 'Sales'].map((p, i) => {
+                        return (
+                            <li
+                                key={i}
+                                onClick={() => setActive(i)}
+                            >
+                                <a href="#" className={active === i && 'active'}>{p}</a>
+                            </li>
+                        )
+                    })
+                }
             </ul>
         </header>
     )

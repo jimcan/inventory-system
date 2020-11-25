@@ -1,0 +1,9 @@
+.content {
+    flex: 1;
+    color: white;
+    margin-top: 60px;
+    border-left: 2px solid #333;
+    background-color: #666;
+    overflow: clip;
+    height: 90vh;
+}
