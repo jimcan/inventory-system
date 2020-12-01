@@ -1,8 +1,8 @@
 import React from 'react'
 import './content.css'
-import Transaction from './transaction'
-import Database from './database'
-import Sales from './sales'
+import Transaction from './transaction/Transaction'
+import Database from './database/Database'
+import Sales from './sales/Sales'
 
 export default function Content({ active }) {
     switch (active) {

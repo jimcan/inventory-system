@@ -7,3 +7,11 @@
     overflow: clip;
     height: 90vh;
 }
+
+.products th {
+    padding: 10px;
+}
+
+.products td {
+    padding: 10px;
+}

@@ -18,7 +18,7 @@ export default function Appbar({ active, setActive }) {
                                 key={i}
                                 onClick={() => setActive(i)}
                             >
-                                <a href="#" className={active === i && 'active'}>{p}</a>
+                                <a href="#" className={active === i ? 'active' : 'false'}>{p}</a>
                             </li>
                         )
                     })
