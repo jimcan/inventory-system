@@ -14,6 +14,7 @@ export default function CustomDatePicker({
       <KeyboardDatePicker
         disableToolbar
         variant='inline'
+        margin='dense'
         inputVariant='outlined'
         label={label}
         format='MMM/dd/yyyy'

@@ -5,7 +5,7 @@ const useStyles = makeStyles({
   sideMenu: {
     display: 'flex',
     flexDirection: 'column',
-    position: 'absolute',
+    position: 'fixed',
     left: '0px',
     width: '200px',
     height: '100%',

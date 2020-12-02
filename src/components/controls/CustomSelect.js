@@ -1,32 +1,84 @@
-import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@material-ui/core'
-import React from 'react'
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField } from '@material-ui/core'
+import React, { useEffect, useState } from 'react'
+import { useFirestore } from '../../hooks/useFirestore';
 
 export default function CustomSelect({
-  name, value, label, error, onChange, options
+  name, value, label, error, onChange
 }) {
+
+  const [open, setOpen] = React.useState(false);
+  const [depts, setDepts] = useState([])
+  const [newDept, setNewDept] = useState('')
+
+  const { docs } = useFirestore('employees')
+
+  useEffect(() => {
+    let d = []
+    docs.forEach(i => d.push(i.department))
+    setDepts(d)
+  }, [docs])
+
+  const handleAdd = () => {
+    setDepts([...depts, newDept])
+    setOpen(false);
+  }
+
   return (
-    <FormControl
-      variant='outlined'
-      {...(error && { error: true })}
-    >
-      <InputLabel>{label}</InputLabel>
-      <Select
-        label={label}
-        name={name}
-        value={value}
-        onChange={onChange}
+    <>
+      <FormControl
+        variant='outlined'
+        {...(error && { error: true })}
       >
-        <MenuItem value=''>None</MenuItem>
-        {
-          options.map(item => (
-            <MenuItem
-              key={item.id}
-              value={item.id}
-            >{item.title}</MenuItem>
-          ))
-        }
-      </Select>
-      {error && <FormHelperText>{error}</FormHelperText>}
-    </FormControl>
+        {/* <InputLabel>{label}</InputLabel> */}
+        <TextField
+          margin='dense'
+          variant='outlined'
+          id='select'
+          label={label}
+          name={name}
+          select
+          value={value}
+          onChange={onChange}
+        >
+          <MenuItem value='' onClick={() => setOpen(true)}>
+            New
+        </MenuItem>
+          {
+            depts.map((item, index) => (
+              <MenuItem
+                key={index}
+                value={item}
+              >{item}</MenuItem>
+            ))
+          }
+        </TextField>
+        {error && <FormHelperText>{error}</FormHelperText>}
+      </FormControl>
+      <Dialog open={open} onClose={() => setOpen(false)} aria-labelledby="form-dialog-title">
+        <DialogTitle id="form-dialog-title">Add new department</DialogTitle>
+        <DialogContent>
+          {/* <DialogContentText>
+            Add new department.
+          </DialogContentText> */}
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Department"
+            type="text"
+            variant='outlined'
+            onChange={e => setNewDept(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleAdd} color="primary">
+            Add
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   )
 }

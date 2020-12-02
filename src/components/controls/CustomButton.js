@@ -18,7 +18,7 @@ export default function CustomButton({
   return (
     <Button
       variant={variant || 'contained'}
-      size={size || 'large'}
+      size={size || 'small'}
       color={color || 'primary'}
       onClick={onClick}
       {...other}

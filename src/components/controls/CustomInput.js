@@ -7,6 +7,7 @@ export default function CustomInput({
   return (
     <TextField
       variant='outlined'
+      margin='dense'
       label={label}
       name={name}
       value={value}

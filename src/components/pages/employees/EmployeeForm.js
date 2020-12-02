@@ -1,26 +1,23 @@
 import { Grid } from '@material-ui/core'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Controls } from '../../controls/Controls'
-import { useForm, Form } from '../../useForm'
+import { useForm, Form } from '../../../hooks/useForm'
 import * as employeeService from '../../../services/employeeServices'
-import useTable from '../../useTable'
 
 const initialValues = {
-  id: 0,
   fullname: '',
   email: '',
   mobile: '',
   gender: 'male',
   city: '',
-  departmentId: '',
+  department: '',
   hireDate: new Date(),
   isPermanent: false
 }
 
 const genderItems = [
   { id: 'male', name: 'Male' },
-  { id: 'female', name: 'Female' },
-  { id: 'other', name: 'Other' }
+  { id: 'female', name: 'Female' }
 ]
 
 export default function EmployeeForm() {
@@ -32,8 +29,8 @@ export default function EmployeeForm() {
       temp.email = (/$^|.+@.+..+/).test(fieldValues.email) ? '' : 'Email is not valid'
     if ('mobile' in fieldValues)
       temp.mobile = fieldValues.mobile.length > 9 ? '' : 'Not a valid contact number'
-    if ('departmentId' in fieldValues)
-      temp.departmentId = fieldValues.departmentId.length != 0 ? '' : 'This field is required'
+    if ('department' in fieldValues)
+      temp.department = fieldValues.department.length != 0 ? '' : 'This field is required'
     setErrors({ ...temp })
 
     if (fieldValues == values)
@@ -42,7 +39,6 @@ export default function EmployeeForm() {
 
   const {
     values,
-    setValues,
     handleInputChange,
     errors,
     setErrors,
@@ -56,10 +52,6 @@ export default function EmployeeForm() {
       resetForm()
     }
   }
-
-  useEffect(() => {
-
-  }, [])
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -103,12 +95,11 @@ export default function EmployeeForm() {
             items={genderItems}
           />
           <Controls.CustomSelect
-            name='departmentId'
+            name='department'
             label='Department'
-            value={values.departmentId}
+            value={values.department}
             onChange={handleInputChange}
-            options={employeeService.getDepartmentCollection()}
-            error={errors.departmentId}
+            error={errors.department}
           />
           <Controls.CustomDatePicker
             name='hireDate'
