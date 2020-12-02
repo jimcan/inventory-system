@@ -1,8 +1,8 @@
 import { Grid } from '@material-ui/core'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Controls } from '../../controls/Controls'
 import { useForm, Form } from '../../../hooks/useForm'
-import * as employeeService from '../../../services/employeeServices'
+// import * as employeeService from '../../../services/employeeServices'
 
 const initialValues = {
   fullname: '',
@@ -20,7 +20,9 @@ const genderItems = [
   { id: 'female', name: 'Female' }
 ]
 
-export default function EmployeeForm() {
+export default function EmployeeForm({
+  addOrEdit, recordForEdit
+}) {
   const validate = (fieldValues = values) => {
     let temp = { ...errors }
     if ('fullname' in fieldValues)
@@ -30,15 +32,16 @@ export default function EmployeeForm() {
     if ('mobile' in fieldValues)
       temp.mobile = fieldValues.mobile.length > 9 ? '' : 'Not a valid contact number'
     if ('department' in fieldValues)
-      temp.department = fieldValues.department.length != 0 ? '' : 'This field is required'
+      temp.department = fieldValues.department.length !== 0 ? '' : 'This field is required'
     setErrors({ ...temp })
 
-    if (fieldValues == values)
-      return Object.values(temp).every(x => x == '')
+    if (fieldValues === values)
+      return Object.values(temp).every(x => x === '')
   }
 
   const {
     values,
+    setValues,
     handleInputChange,
     errors,
     setErrors,
@@ -48,10 +51,14 @@ export default function EmployeeForm() {
   const handleSubmit = e => {
     e.preventDefault()
     if (validate()) {
-      employeeService.addEmployee(values)
-      resetForm()
+      addOrEdit(values, resetForm)
     }
   }
+
+  useEffect(() => {
+    if (recordForEdit !== null)
+      setValues({ ...recordForEdit })
+  }, [recordForEdit])
 
   return (
     <Form onSubmit={handleSubmit}>

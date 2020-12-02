@@ -15,7 +15,7 @@ export default function CustomRadioGroup({
       >
         {
           items.map((item, index) => (
-            <FormControlLabel key={index} value={item.id} control={<Radio />} label={item.name} />
+            <FormControlLabel key={index} value={item.id} control={<Radio color='primary' />} label={item.name} />
           ))
         }
       </RadioGroup>

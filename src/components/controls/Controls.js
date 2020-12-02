@@ -4,6 +4,7 @@ import CustomSelect from './CustomSelect'
 import CustomCheckbox from './CustomCheckbox'
 import CustomDatePicker from './CustomDatePicker'
 import CustomButton from './CustomButton'
+import ActionButton from './ActionButton'
 
 export const Controls = {
   CustomInput,
@@ -11,5 +12,6 @@ export const Controls = {
   CustomSelect,
   CustomCheckbox,
   CustomDatePicker,
-  CustomButton
+  CustomButton,
+  ActionButton
 }

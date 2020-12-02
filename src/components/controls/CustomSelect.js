@@ -14,12 +14,16 @@ export default function CustomSelect({
 
   useEffect(() => {
     let d = []
-    docs.forEach(i => d.push(i.department))
+    docs.forEach(i => {
+      if (!d.includes(i.department))
+        d.push(i.department)
+    })
     setDepts(d)
   }, [docs])
 
   const handleAdd = () => {
-    setDepts([...depts, newDept])
+    if (!depts.includes(newDept))
+      setDepts([...depts, newDept])
     setOpen(false);
   }
 
@@ -29,7 +33,6 @@ export default function CustomSelect({
         variant='outlined'
         {...(error && { error: true })}
       >
-        {/* <InputLabel>{label}</InputLabel> */}
         <TextField
           margin='dense'
           variant='outlined'
@@ -57,9 +60,6 @@ export default function CustomSelect({
       <Dialog open={open} onClose={() => setOpen(false)} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Add new department</DialogTitle>
         <DialogContent>
-          {/* <DialogContentText>
-            Add new department.
-          </DialogContentText> */}
           <TextField
             autoFocus
             margin="dense"
