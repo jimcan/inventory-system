@@ -13,8 +13,8 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.primary.main,
       // backgroundColor: theme.palette.primary.light,
       backgroundColor: '#eee',
-      position: 'sticky',
-      top: 0
+      // position: 'sticky',
+      // top: 0
     },
     '& tbody td': {
       fontWeight: '300'
@@ -41,7 +41,7 @@ export default function useTable(
 
   const TblContainer = props => (
     <div className={classes.root}>
-      <Table className={classes.table} size='small' dense table>
+      <Table stickyHeader pageResize className={classes.table} size='small' dense table>
         {props.children}
       </Table>
     </div>
