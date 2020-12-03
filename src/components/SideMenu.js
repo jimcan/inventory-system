@@ -7,7 +7,7 @@ const useStyles = makeStyles({
     flexDirection: 'column',
     position: 'fixed',
     left: '0px',
-    width: '200px',
+    width: '20%',
     height: '100%',
     backgroundColor: '#253053'
   }

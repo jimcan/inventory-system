@@ -6,6 +6,7 @@ import Employees from './pages/employees/Employees'
 
 const theme = createMuiTheme({
   palette: {
+    // type: 'dark',
     primary: {
       main: '#333996',
       light: '#3c44b126'
@@ -37,8 +38,11 @@ const theme = createMuiTheme({
 
 const useStyles = makeStyles({
   appMain: {
-    paddingLeft: '200px',
-    width: '100%'
+    width: '80%',
+    height: '100%',
+    position: 'fixed',
+    right: '0',
+    top: '0'
   }
 })
 

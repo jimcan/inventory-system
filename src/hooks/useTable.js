@@ -2,12 +2,19 @@ import { makeStyles, Table, TableCell, TableHead, TablePagination, TableRow, Tab
 import React, { useState } from 'react'
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    height: `calc(100vh - ${theme.spacing(48)}px)`,
+    overflow: 'auto'
+  },
   table: {
-    marginTop: theme.spacing(3),
+    // marginTop: theme.spacing(3),
     '& thead th': {
       fontWeight: '600',
       color: theme.palette.primary.main,
-      backgroundColor: theme.palette.primary.light
+      // backgroundColor: theme.palette.primary.light,
+      backgroundColor: '#eee',
+      position: 'sticky',
+      top: 0
     },
     '& tbody td': {
       fontWeight: '300'
@@ -33,9 +40,11 @@ export default function useTable(
   const [orderBy, setOrderBy] = useState()
 
   const TblContainer = props => (
-    <Table className={classes.table}>
-      {props.children}
-    </Table>
+    <div className={classes.root}>
+      <Table className={classes.table} size='small' dense table>
+        {props.children}
+      </Table>
+    </div>
   )
 
   const TblHead = props => {

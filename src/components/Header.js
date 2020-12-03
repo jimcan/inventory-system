@@ -4,7 +4,7 @@ import React from 'react'
 
 const useStyles = makeStyles({
   root: {
-    backgroundColor: '#fff'
+    backgroundColor: '#eee'
   },
   searchInput: {
     opacity: '0.6',

@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
   pageContent: {
     margin: theme.spacing(2),
     padding: theme.spacing(2),
-    overflowX: 'hidden',
+    height: 'calc(100vh - 235px)'
   },
   searchInput: {
     width: '75%'
@@ -74,6 +74,11 @@ export default function Employees() {
     if (employee.id == null) {
       employeeService.addEmployee(employee)
       console.log('add');
+      setNotify({
+        isOpen: true,
+        message: 'Added Succesfully',
+        type: 'success'
+      })
     }
     else {
       employeeService.updateEmployee(employee)
