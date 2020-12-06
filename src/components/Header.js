@@ -1,8 +1,7 @@
-import { AppBar, Grid, IconButton, InputBase, Badge, Toolbar, makeStyles } from '@material-ui/core'
-import { ChatBubbleOutline, NotificationsNone, PowerSettingsNew, Search } from '@material-ui/icons'
+import { AppBar, Grid, Toolbar, makeStyles, Typography } from '@material-ui/core'
 import React from 'react'
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   root: {
     backgroundColor: '#eee'
   },
@@ -11,15 +10,23 @@ const useStyles = makeStyles({
     padding: '0px 8px',
     fontSize: '0.8rem',
     '&:hover': {
-      backgroundColor: '#f2f2f2'
+      backgroundColor: '#aaa'
     },
     '& .MuiSvgIcon-root': {
       marginRight: '8px'
     }
+  },
+  title: {
+    fontWeight: 'bold',
+    color: '#253053'
+  },
+  page: {
+    fontWeight: 'bold',
+    color: '#455073'
   }
-})
+}))
 
-export default function Appbar() {
+export default function Header({ pageTitle }) {
   const classes = useStyles()
 
   return (
@@ -27,27 +34,21 @@ export default function Appbar() {
       <Toolbar>
         <Grid container alignItems='center'>
           <Grid item>
-            <InputBase
-              placeholder='Search'
-              startAdornment={<Search fontSize='small' />}
-              className={classes.searchInput}
-            />
+            <Typography
+              variant='h5'
+              className={classes.title}
+            >
+              R & C POS and Inventory System
+            </Typography>
           </Grid>
           <Grid item sm></Grid>
           <Grid item>
-            <IconButton>
-              <Badge badgeContent={4} color='secondary'>
-                <NotificationsNone fontSize='small' />
-              </Badge>
-            </IconButton>
-            <IconButton>
-              <Badge badgeContent={3} color='primary'>
-                <ChatBubbleOutline fontSize='small' />
-              </Badge>
-            </IconButton>
-            <IconButton>
-              <PowerSettingsNew />
-            </IconButton>
+            <Typography
+              variant='h6'
+              className={classes.page}
+            >
+              { pageTitle }
+            </Typography>
           </Grid>
         </Grid>
       </Toolbar>

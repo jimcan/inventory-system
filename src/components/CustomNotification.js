@@ -8,12 +8,12 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-export default function Notification({
+export default function CustomNotification({
     notify, setNotify
 }) {
     const classes = useStyles()
 
-    const handleClose = (event, reason) => {
+    const handleClose = (_, reason) => {
         if (reason === 'clickAway') return
         setNotify({ ...notify, isOpen: false })
     }
