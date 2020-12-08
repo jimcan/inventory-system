@@ -1,4 +1,14 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, FormHelperText, InputLabel, MenuItem, Select, TextField } from '@material-ui/core'
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControl,
+  FormHelperText,
+  MenuItem,
+  TextField
+} from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { useFirestore } from '../../hooks/useFirestore';
 
@@ -10,20 +20,21 @@ export default function CustomSelect({
   const [depts, setDepts] = useState([])
   const [newDept, setNewDept] = useState('')
 
-  const { docs } = useFirestore('employees')
+  const { docs } = useFirestore('staffs')
 
   useEffect(() => {
     let d = []
     docs.forEach(i => {
-      if (!d.includes(i.department))
-        d.push(i.department)
+      if (!d.includes(i.position))
+        d.push(i.position)
     })
     setDepts(d)
   }, [docs])
 
-  const handleAdd = () => {
-    if (!depts.includes(newDept))
+  const handleAdd = e => {
+    if (!depts.includes(newDept)) {
       setDepts([...depts, newDept])
+    }
     setOpen(false);
   }
 
@@ -40,12 +51,13 @@ export default function CustomSelect({
           label={label}
           name={name}
           select
+          fullWidth
           value={value}
           onChange={onChange}
         >
           <MenuItem value='' onClick={() => setOpen(true)}>
             New
-        </MenuItem>
+          </MenuItem>
           {
             depts.map((item, index) => (
               <MenuItem
@@ -57,14 +69,14 @@ export default function CustomSelect({
         </TextField>
         {error && <FormHelperText>{error}</FormHelperText>}
       </FormControl>
-      <Dialog open={open} onClose={() => setOpen(false)} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Add new department</DialogTitle>
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>Add new position</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             margin="dense"
             id="name"
-            label="Department"
+            label="Position"
             type="text"
             variant='outlined'
             onChange={e => setNewDept(e.target.value)}

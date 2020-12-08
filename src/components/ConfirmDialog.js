@@ -3,7 +3,7 @@ import React from 'react'
 import { Controls } from './controls/Controls'
 
 export default function ConfirmDialog({
-    color, confirmDialog, setConfirmDialog
+    confirmDialog, setConfirmDialog
 }) {
     return (
         <Dialog

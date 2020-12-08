@@ -1,7 +1,6 @@
-import { Dialog, DialogContent, DialogTitle, makeStyles, Typography } from '@material-ui/core'
+import { Dialog, DialogActions, DialogContent, DialogTitle, IconButton, makeStyles, Typography } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
 import React from 'react'
-import { Controls } from './controls/Controls'
 
 const useStyles = makeStyles(theme => ({
     dialogWrapper: {
@@ -24,6 +23,7 @@ const useStyles = makeStyles(theme => ({
 export default function Popup({
     title,
     children,
+    actions,
     openPopup,
     setOpenPopup,
     setRecordForEdit
@@ -50,17 +50,21 @@ export default function Popup({
                     >
                         {title}
                     </Typography>
-                    <Controls.ActionButton
-                        color='secondary'
+                    <IconButton
                         onClick={onClose}
+                        color='secondary'
+                        size='small'
                     >
                         <Close />
-                    </Controls.ActionButton>
+                    </IconButton>
                 </div>
             </DialogTitle>
             <DialogContent dividers>
                 { children }
             </DialogContent>
+            <DialogActions>
+                { actions }
+            </DialogActions>
         </Dialog>
     )
 }
