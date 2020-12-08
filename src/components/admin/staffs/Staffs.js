@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button, IconButton, InputAdornment, makeStyles, Paper, TextField
+  IconButton, InputAdornment, makeStyles, Paper, TextField
 } from '@material-ui/core';
 import { DataGrid } from '@material-ui/data-grid';
-import { addData, deleteData, updateData, useFirestore } from '../../../hooks/useFirestore';
+import { useFirestore } from '../../../hooks/useFirestore';
 import { Add, Remove, Search } from '@material-ui/icons';
 import StaffForm from './StaffForm';
 import CustomNotification from '../../CustomNotification';
 import { DialogForm, useDialogForm } from '../../../hooks/useDialogForm';
 import ConfirmDialog from '../../ConfirmDialog';
+import { Controls } from '../../controls/Controls';
 
 const useStyles = makeStyles({
   content: {
@@ -19,11 +20,9 @@ const useStyles = makeStyles({
   toolbar: {
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'space-between',
     height: '100px',
     padding: '20px'
-  },
-  spacer: {
-    flexGrow: 1
   },
   table: {
     backgroundColor: '#aaa',
@@ -59,13 +58,18 @@ const columns = [
 
 export default function Staffs() {
   const classes = useStyles()
-  const { docs } = useFirestore('staffs')
   const [openStaffForm, setOpenStaffForm] = useState(false)
   const [notify, setNotify] = useState({ isOpen: false })
   const [recordForEdit, setRecordForEdit] = useState(null)
   const [confirmDialog, setConfirmDialog] = useState({})
-  const [filterFn, setFilterFn] = useState({ fn: items => items })
   const [searchValue, setSearchValue] = useState('')
+  const {
+    filteredDocs,
+    filterDocuments,
+    addDocument,
+    updateDocument,
+    deleteDocument
+  } = useFirestore('staffs')
 
   const validate = (fieldValues = values) => {
     let temp = { ...errors }
@@ -81,7 +85,7 @@ export default function Staffs() {
 
     if (fieldValues === values)
       return Object.values(temp).every(x => x === '')
-  }  
+  }
 
   const {
     values,
@@ -108,39 +112,28 @@ export default function Staffs() {
 
   const handleSearch = e => {
     setSearchValue(e.target.value)
-    setFilterFn({
-      fn: items => {
-        if (e.target.value === '')
-          return items
-        else
-          return items
-            .filter(
-              x => x.username.toLowerCase().includes(e.target.value) ||
-                x.fullname.toLowerCase().includes(e.target.value)
-            )
-      }
-    })
+    filterDocuments(searchValue, 'name')
   }
 
   const handleSearchClear = () => {
     setSearchValue('')
-    setFilterFn({fn: items => items})
+    filterDocuments(searchValue, 'name')
   }
 
   const addOrEdit = (staff, clearFields) => {
-    if (staff.id == null) {
-      addData('staffs', staff)
+    if (staff.id) {
+      updateDocument(staff)
       setNotify({
         isOpen: true,
-        message: 'Added Succesfully',
+        message: 'Updated Succesfully',
         type: 'success'
       })
     }
     else {
-      updateData('staffs', staff)
+      addDocument(staff)
       setNotify({
         isOpen: true,
-        message: 'Updated Succesfully',
+        message: 'Added Succesfully',
         type: 'success'
       })
     }
@@ -151,7 +144,7 @@ export default function Staffs() {
 
   const onRowClick = params => {
     const id = params.getValue('id')
-    const staff = docs.find(d => d.id === id)
+    const staff = filteredDocs.find(d => d.id === id)
     setRecordForEdit(staff)
     setOpenStaffForm(true)
   }
@@ -162,7 +155,7 @@ export default function Staffs() {
       title: 'Are you sure to delete this item?',
       subtitle: "You can't undo this process",
       onConfirm: () => {
-        deleteData('staffs', recordForEdit.id)
+        deleteDocument(recordForEdit.id)
         setRecordForEdit(null)
         setConfirmDialog({ isOpen: false })
         setOpenStaffForm(false)
@@ -173,7 +166,7 @@ export default function Staffs() {
         })
       }
     })
-    
+
   }
 
   return (
@@ -198,25 +191,24 @@ export default function Staffs() {
                   onClick={handleSearchClear}
                 >
                   <Remove size='small' />
-                </IconButton>                  
+                </IconButton>
               </InputAdornment>
             )
           }}
         />
-        <div className={classes.spacer}></div>
-        <Button
-          variant="outlined"
+        <Controls.CustomFAB
+          text='Add new staff'
           color="primary"
+          size='large'
           onClick={() => setOpenStaffForm(true)}
         >
           <Add size='small' />
-          Add new staff
-        </Button>
+        </Controls.CustomFAB>
       </div>
       <Paper className={classes.content}>
         <DataGrid
           className={classes.table}
-          rows={filterFn.fn(docs)}
+          rows={filteredDocs}
           columns={columns}
           autoPageSize
           onRowClick={onRowClick}

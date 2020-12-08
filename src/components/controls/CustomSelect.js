@@ -20,18 +20,19 @@ export default function CustomSelect({
   const [depts, setDepts] = useState([])
   const [newDept, setNewDept] = useState('')
 
-  const { docs } = useFirestore('staffs')
+  const { filteredDocs } = useFirestore('staffs')
 
   useEffect(() => {
     let d = []
-    docs.forEach(i => {
+    filteredDocs.forEach(i => {
       if (!d.includes(i.position))
         d.push(i.position)
     })
     setDepts(d)
-  }, [docs])
+  }, [filteredDocs])
 
   const handleAdd = e => {
+    e.preventDefault()
     if (!depts.includes(newDept)) {
       setDepts([...depts, newDept])
     }

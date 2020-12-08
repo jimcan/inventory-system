@@ -30,7 +30,7 @@ const useStyles = makeStyles({
 })
 
 const pages = ['Admin Dashboard', 'Transactions']
-const AdminPages = [ 'Manage Products', 'Manage Staffs', 'Sales' ]
+const AdminPages = ['Manage Products', 'Manage Staffs', 'Sales']
 
 export default function App() {
   const classes = useStyles()
@@ -42,10 +42,10 @@ export default function App() {
     switch (page) {
       case 0:
         return <Admin adminPage={adminPage} />
-      
+
       case 1:
         return <Transactions />
-    
+
       default:
         break
     }
@@ -61,24 +61,24 @@ export default function App() {
       {
         user
           ? <div>
-              <SideMenu
-                user={user}
-                setUser={setUser}
-                {...(page === 0 && { adminPages: AdminPages })}
-                {...(page === 0 && { adminPage: adminPage })}
-                {...(page === 0 && { setAdminPage: setAdminPage })}
-              />
-              <div className={classes.appMain}>
-              <Header pageTitle={ pages[page] }/>
-                { renderPages() }
-              </div>
+            <SideMenu
+              user={user}
+              setUser={setUser}
+              {...(page === 0 && { adminPages: AdminPages })}
+              {...(page === 0 && { adminPage: adminPage })}
+              {...(page === 0 && { setAdminPage: setAdminPage })}
+            />
+            <div className={classes.appMain}>
+              <Header pageTitle={pages[page]} />
+              {renderPages()}
             </div>
-          : <LogIn 
+          </div>
+          : <LogIn
             user={user}
             setUser={setUser}
           />
       }
-      
+
       <CssBaseline />
     </ThemeProvider>
   );

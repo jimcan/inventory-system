@@ -1,5 +1,5 @@
 import { Dialog, DialogActions, DialogContent, DialogTitle, IconButton, makeStyles, Typography } from '@material-ui/core'
-import { Close } from '@material-ui/icons'
+import { AddOutlined, ClearAllOutlined, Close, DeleteOutlined, UpdateOutlined } from '@material-ui/icons'
 import React, { useState } from 'react'
 import { Controls } from '../components/controls/Controls'
 
@@ -61,8 +61,8 @@ export function DialogForm({
 
   return (
     <Dialog
-    open={openDialogForm}
-    onClose={onClose}
+      open={openDialogForm}
+      onClose={onClose}
     >
       <DialogTitle>
         <div className={classes.dialogTitleDiv}>
@@ -70,7 +70,7 @@ export function DialogForm({
             variant='h6'
             component='div'
           >
-            { title ? `Edit ${title}` : 'Add new' }
+            {title ? `Edit ${title}` : 'Add new'}
           </Typography>
           <IconButton
             onClick={onClose}
@@ -82,27 +82,37 @@ export function DialogForm({
         </div>
       </DialogTitle>
       <DialogContent dividers>
-        { children }
+        {children}
       </DialogContent>
       <DialogActions>
-        <Controls.CustomButton
-          text='Clear fields'
-          variant='outlined'
+        <Controls.CustomFAB
+          text='Clear'
           onClick={clearFields}
-        />
+        >
+          <ClearAllOutlined size='small' />
+        </Controls.CustomFAB>
         {
-          title &&  <Controls.CustomButton
-            text='Delete this item'
+          title && <Controls.CustomFAB
+            text='Delete'
             color='secondary'
             onClick={handleDelete}
-          />
-        }        
-        <Controls.CustomButton
+          >
+            <DeleteOutlined size='small' />
+          </Controls.CustomFAB>
+        }
+        <Controls.CustomFAB
           text={title ? 'Update' : 'Add'}
+          color='primary'
           onClick={handleSubmit}
-        />
+        >
+          {
+            title
+              ? <UpdateOutlined size='small' />
+              : <AddOutlined size='small' />
+          }
+        </Controls.CustomFAB>
       </DialogActions>
     </Dialog>
   )
-  
+
 }

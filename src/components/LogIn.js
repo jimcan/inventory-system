@@ -5,15 +5,15 @@ import { useFirestore } from '../hooks/useFirestore';
 import { Controls } from './controls/Controls'
 import CustomNotification from './CustomNotification';
 
-const initialValues = { username: '', password: ''}
+const initialValues = { username: '', password: '' }
 
 export default function LogIn({
   user, setUser
 }) {
   const [notify, setNotify] = useState({ isOpen: false })
-  const { docs } = useFirestore('staffs')
+  const { filteredDocs } = useFirestore('staffs')
 
-  const { 
+  const {
     values,
     handleInputChange
   } = useDialogForm(initialValues)
@@ -36,7 +36,7 @@ export default function LogIn({
     //     type: 'error'
     //   })
     // });
-    const loggedUser = docs
+    const loggedUser = filteredDocs
       .find(d => d.username === values.username && d.password === values.password)
     if (loggedUser) {
       setUser(loggedUser)
@@ -48,7 +48,7 @@ export default function LogIn({
       })
     }
   }
-  
+
 
   return (
     <div
@@ -80,7 +80,7 @@ export default function LogIn({
             value={values.password}
             onChange={handleInputChange}
             onKeyDown={(e) => {
-              if (e.code === 'Enter') handleSignIn(e)
+              if (e.code === 'Enter' || e.code === 'NumpadEnter') handleSignIn(e)
             }}
           />
           <Controls.CustomButton
@@ -88,7 +88,7 @@ export default function LogIn({
             size='large'
             onClick={handleSignIn}
           />
-        </div>        
+        </div>
       </div>
       <CustomNotification
         notify={notify}

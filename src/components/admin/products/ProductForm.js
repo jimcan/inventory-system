@@ -17,7 +17,7 @@ export default function ProductForm({
           onChange={handleInputChange}
           error={errors.name}
           onKeyDown={(e) => {
-            if (e.code === 'Enter') handleSubmit(e)
+            if (e.code === 'Enter' || e.code === 'NumpadEnter') handleSubmit(e)
           }}
         />
         <Controls.CustomInput
@@ -27,7 +27,7 @@ export default function ProductForm({
           onChange={handleInputChange}
           error={errors.unit}
           onKeyDown={(e) => {
-            if (e.code === 'Enter') handleSubmit(e)
+            if (e.code === 'Enter' || e.code === 'NumpadEnter') handleSubmit(e)
           }}
         />
       </div>
@@ -38,9 +38,9 @@ export default function ProductForm({
           name='price'
           value={values.price}
           onChange={handleInputChange}
-          error={errors.stock}
+          error={errors.price}
           onKeyDown={(e) => {
-            if (e.code === 'Enter') handleSubmit(e)
+            if (e.code === 'Enter' || e.code === 'NumpadEnter') handleSubmit(e)
           }}
         />
         <Controls.CustomInput
@@ -50,7 +50,7 @@ export default function ProductForm({
           onChange={handleInputChange}
           error={errors.stock}
           onKeyDown={(e) => {
-            if (e.code === 'Enter') handleSubmit(e)
+            if (e.code === 'Enter' || e.code === 'NumpadEnter') handleSubmit(e)
           }}
         />
       </div>

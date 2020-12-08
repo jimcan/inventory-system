@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button, IconButton, InputAdornment, makeStyles, Paper, TextField
+  Fab, IconButton, InputAdornment, makeStyles, Paper, TextField
 } from '@material-ui/core';
 import { DataGrid } from '@material-ui/data-grid';
-import { addData, deleteData, updateData, useFirestore } from '../../../hooks/useFirestore';
+import { useFirestore } from '../../../hooks/useFirestore';
 import { Add, Remove, Search } from '@material-ui/icons';
 import ProductForm from './ProductForm';
 import CustomNotification from '../../CustomNotification';
@@ -19,11 +19,9 @@ const useStyles = makeStyles({
   toolbar: {
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'space-between',
     height: '100px',
     padding: '20px'
-  },
-  spacer: {
-    flexGrow: 1
   },
   table: {
     backgroundColor: '#aaa',
@@ -66,13 +64,18 @@ const columns = [
 
 export default function Products() {
   const classes = useStyles()
-  const { docs } = useFirestore('products')
   const [openProductForm, setOpenProductForm] = useState(false)
   const [notify, setNotify] = useState({ isOpen: false })
   const [recordForEdit, setRecordForEdit] = useState(null)
   const [confirmDialog, setConfirmDialog] = useState({})
-  const [filterFn, setFilterFn] = useState({ fn: items => items })
   const [searchValue, setSearchValue] = useState('')
+  const {
+    filteredDocs,
+    filterDocuments,
+    addDocument,
+    updateDocument,
+    deleteDocument
+  } = useFirestore('products')
 
   const validate = (fieldValues = values) => {
     let temp = { ...errors }
@@ -88,7 +91,7 @@ export default function Products() {
 
     if (fieldValues === values)
       return Object.values(temp).every(x => x === '')
-  }  
+  }
 
   const {
     values,
@@ -115,38 +118,28 @@ export default function Products() {
 
   const handleSearch = e => {
     setSearchValue(e.target.value)
-    setFilterFn({
-      fn: items => {
-        if (e.target.value === '')
-          return items
-        else
-          return items
-            .filter(
-              x => x.name.toLowerCase().includes(e.target.value)
-            )
-      }
-    })
+    filterDocuments(searchValue, 'name')
   }
 
   const handleSearchClear = () => {
     setSearchValue('')
-    setFilterFn({fn: items => items})
+    filterDocuments(searchValue, 'name')
   }
 
   const addOrEdit = (product, clearFields) => {
-    if (product.id == null) {
-      addData('products', product)
+    if (product.id) {
+      updateDocument(product)
       setNotify({
         isOpen: true,
-        message: 'Added Succesfully',
+        message: 'Updated Succesfully',
         type: 'success'
       })
     }
     else {
-      updateData('products', product)
+      addDocument(product)
       setNotify({
         isOpen: true,
-        message: 'Updated Succesfully',
+        message: 'Added Succesfully',
         type: 'success'
       })
     }
@@ -157,7 +150,7 @@ export default function Products() {
 
   const onRowClick = params => {
     const id = params.getValue('id')
-    const product = docs.find(d => d.id === id)
+    const product = filteredDocs.find(d => d.id === id)
     setRecordForEdit(product)
     setOpenProductForm(true)
   }
@@ -168,7 +161,7 @@ export default function Products() {
       title: 'Are you sure to delete this item?',
       subtitle: "You can't undo this process",
       onConfirm: () => {
-        deleteData('products', recordForEdit.id)
+        deleteDocument(recordForEdit.id)
         setRecordForEdit(null)
         setConfirmDialog({ isOpen: false })
         setOpenProductForm(false)
@@ -179,7 +172,7 @@ export default function Products() {
         })
       }
     })
-    
+
   }
 
   return (
@@ -204,25 +197,24 @@ export default function Products() {
                   onClick={handleSearchClear}
                 >
                   <Remove size='small' />
-                </IconButton>                  
+                </IconButton>
               </InputAdornment>
             )
           }}
         />
-        <div className={classes.spacer}></div>
-        <Button
-          variant="outlined"
-          color="primary"
+        <Fab
+          variant='extended'
+          color='primary'
           onClick={() => setOpenProductForm(true)}
         >
           <Add size='small' />
           Add new product
-        </Button>
+        </Fab>
       </div>
       <Paper className={classes.content}>
         <DataGrid
           className={classes.table}
-          rows={filterFn.fn(docs)}
+          rows={filteredDocs}
           columns={columns}
           autoPageSize
           onRowClick={onRowClick}

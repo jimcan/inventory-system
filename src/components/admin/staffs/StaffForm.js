@@ -1,5 +1,6 @@
 import { Grid } from "@material-ui/core"
 import { Controls } from "../../controls/Controls"
+import Spacer from "../../controls/Spacer"
 
 export default function StaffForm({
   values, errors, handleInputChange, handleSubmit
@@ -16,7 +17,7 @@ export default function StaffForm({
           onChange={handleInputChange}
           error={errors.username}
           onKeyDown={(e) => {
-            if (e.code === 'Enter') handleSubmit(e)
+            if (e.code === 'Enter' || e.code === 'NumpadEnter') handleSubmit(e)
           }}
         />
         <Controls.CustomInput
@@ -27,9 +28,12 @@ export default function StaffForm({
           onChange={handleInputChange}
           error={errors.password}
           onKeyDown={(e) => {
-            if (e.code === 'Enter') handleSubmit(e)
+            if (e.code === 'Enter' || e.code === 'NumpadEnter') handleSubmit(e)
           }}
         />
+      </div>
+      <Spacer width='20px' />
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
         <Controls.CustomInput
           label='Fullname'
           name='fullname'
@@ -37,7 +41,7 @@ export default function StaffForm({
           onChange={handleInputChange}
           error={errors.fullname}
           onKeyDown={(e) => {
-            if (e.code === 'Enter') handleSubmit(e)
+            if (e.code === 'Enter' || e.code === 'NumpadEnter') handleSubmit(e)
           }}
         />
         <Controls.CustomSelect

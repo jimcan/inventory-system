@@ -16,6 +16,7 @@ export function useFirestore(collection) {
       setFilteredDocs(documents)
     })
     return () => unsub()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [collection])
 
   const filterDocuments = (query, appliedTo) => {
