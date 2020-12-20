@@ -53,7 +53,7 @@ export function DialogForm({
   children
 }) {
   const classes = useStyles()
-  const onClose = (_, __) => {
+  const onClose = () => {
     clearFields()
     setOpenDialogForm(false)
     setRecordForEdit(null)
